@@ -48,16 +48,16 @@ options:
   -h, --help            show this help message and exit
   -i ID, --id ID        Get Sigma Rule by Rule ID. The Rule ID is an internal reference used only by this tool.
   -t TECHNIQUE, --technique TECHNIQUE
-                        MITRE ATT&CK Technique to lookup
-  -T , --tactic         MITRE ATT&CK Tactic to lookup. Allowed values are: collection, command-and-control, credential-access, defense-evasion, discovery, execution, exfiltration, impact, initial-access, lateral-movement,
-                        persistence, privilege-escalation, reconnaissance, resource-development
-  -p , --product        Search by Product. Allowed values are: macos, sql, spring, linux, python, github, huawei, qualys, rpc_firewall, nodejs, jvm, m365, windows, aws, cisco, django, bitbucket, gcp, opencanary,
-                        kubernetes, azure, okta, onelogin, ruby_on_rails, juniper, velocity, zeek
+                        Search by MITRE ATT&CK Technique.
+  -T , --tactic         Search by MITRE ATT&CK Tactic. Allowed values are: collection, command-and-control, credential-access, defense-evasion, discovery, execution, exfiltration, impact, initial-access,
+                        lateral-movement, persistence, privilege-escalation, reconnaissance, resource-development
+  -p , --product        Search by Product. Allowed values are: huawei, cisco, m365, github, paloalto, zeek, spring, fortios, nodejs, jvm, aws, bitbucket, onelogin, windows, django, linux, velocity, gcp, macos,
+                        sql, okta, python, ruby_on_rails, opencanary, juniper, kubernetes, rpc_firewall, qualys, azure
   -S  [ ...], --status  [ ...]
-                        Filter by Sigma Rule status. Allowed values are: stable, test, experimental, deprecated, unsupported
+                        Filter by status. Allowed values are: stable, test, experimental, deprecated, unsupported
   -s SEARCH, --search SEARCH
-                        Search for free text in rule titles and descriptions.
-  -F, --force-caching   Force the regeneration of the detection rule cache.
+                        Search for free text in rule titles and descriptions (RegEx are supported).
+  -F, --force-caching   Force the regeneration of the detection rule cache
 ```
 
 ### Examples

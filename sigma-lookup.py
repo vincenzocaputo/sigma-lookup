@@ -20,7 +20,7 @@ if __name__ == "__main__":
     if not os.path.isfile(parsed_file):
         console.print("> [orange3]Cache file is missing. Attempting to create a new cache...")
         os.makedirs('/'.join(parsed_file.split('/')[:-1]), exist_ok=True)
-        if sigma_parser('sigma/rules', parsed_file):
+        if sigma_parser(('sigma/rules', 'sigma/rules-threat-hunting', 'sigma/rules-emerging-threats'), parsed_file):
             console.print("> [green]Cache file created.")
 
     with open(parsed_file, 'r') as fd:
@@ -29,8 +29,8 @@ if __name__ == "__main__":
     products = set( r['product'] for _, r in rules.items() if r['product'])
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-i", "--id", type=str, help="Get Sigma Rule by ID")
-    parser.add_argument("-t", "--technique", type=str, help="Technique to lookup")
+    parser.add_argument("-i", "--id", type=str, help="Get Sigma Rule by Rule ID. The Rule ID is an internal reference used only by this tool.")
+    parser.add_argument("-t", "--technique", type=str, help="Search by MITRE ATT&CK Technique.")
 
     tactis_choices = ["collection", \
                         "command-and-control", \
@@ -46,7 +46,7 @@ if __name__ == "__main__":
                         "privilege-escalation", \
                         "reconnaissance", \
                         "resource-development"] 
-    parser.add_argument("-T", "--tactic", type=str, help=("Tactic to lookup. Allowed values are: "+', '.join(tactis_choices)), choices=tactis_choices, metavar='')
+    parser.add_argument("-T", "--tactic", type=str, help=("Search by MITRE ATT&CK Tactic. Allowed values are: "+', '.join(tactis_choices)), choices=tactis_choices, metavar='')
     parser.add_argument("-p", "--product", type=str, 
                         help=("Search by Product. Allowed values are: "+', '.join(products)), 
                         choices=list(products), metavar='')
@@ -56,8 +56,8 @@ if __name__ == "__main__":
                     'deprecated', \
                     'unsupported']
     parser.add_argument("-S", "--status", nargs="+", help="Filter by status. Allowed values are: "+', '.join(status_values), choices=status_values, metavar='')
-    parser.add_argument("-s", "--search", type=str, help="Search rules by free text")
-    parser.add_argument("-F", "--force-caching", help="Force the caching of the detection rules.", action="store_true")
+    parser.add_argument("-s", "--search", type=str, help="Search for free text in rule titles and descriptions (RegEx are supported).")
+    parser.add_argument("-F", "--force-caching", help="Force the regeneration of the detection rule cache.", action="store_true")
     args = parser.parse_args()
     technique = args.technique
     tactic = args.tactic
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     if args.force_caching:
         console.print("> [orange3]Caching the detection rules...")
-        if sigma_parser('sigma/rules', parsed_file):
+        if sigma_parser(('sigma/rules', 'sigma/rules-threat-hunting', 'sigma/rules-emerging-threats'), parsed_file):
             console.print("> [green]Cache file created.")
             sys.exit(0)
         else:
